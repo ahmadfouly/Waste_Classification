@@ -45,7 +45,7 @@ def main():
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
         st.image(image, caption='Uploaded Image', use_column_width=True)
-        scores = predict(uploaded_file)
+        scores = predict(image)
         result_index = np.argmax(scores)
         result_confidence = np.max(scores)
 
