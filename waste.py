@@ -2,7 +2,6 @@ import streamlit as st
 import numpy as np
 from PIL import Image
 import tensorflow as tf
-import cv2
 
 # Load your model
 model = tf.keras.models.load_model('resnet_model.h5')
@@ -25,11 +24,12 @@ class_names = {
 
 def load_image(image):
     """Resize the image to be suitable for the model."""
-    img = image.resize((224, 224))
-    img_array = np.array(img)
-    img_array = np.expand_dims(img_array, axis=0)  
+    img = image.resize((224, 224))  # Resize image to 224x224 pixels
+    img_array = np.array(img)  # Convert image to numpy array
+    if img_array.ndim == 2:  # Convert grayscale to RGB if necessary
+        img_array = np.stack((img_array,)*3, axis=-1)
+    img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
     return img_array
-
 
 def predict(image):
     """Run model prediction on the image and return scores."""
