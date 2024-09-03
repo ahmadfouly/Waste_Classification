@@ -28,12 +28,16 @@ def load_image(image):
     img_array = np.array(img)  # Convert image to numpy array
     if img_array.ndim == 2:  # Convert grayscale to RGB if necessary
         img_array = np.stack((img_array,)*3, axis=-1)
+    if img_array.shape[-1] == 4:  # Handle RGBA images by converting to RGB
+        img_array = img_array[..., :3]
+    img_array = img_array.astype('float32') / 255.0  # Normalize pixel values
     img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
     return img_array
 
 def predict(image):
     """Run model prediction on the image and return scores."""
     img_array = load_image(image)
+    st.write(f"Image shape for prediction: {img_array.shape}")  # Debugging output
     predictions = model.predict(img_array)
     scores = tf.nn.softmax(predictions[0]) 
     return scores
