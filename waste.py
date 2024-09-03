@@ -23,13 +23,13 @@ class_names = {
     11: 'white-glass'
 }
 
-def load_image(image_file):
-    """Load and resize the image to be suitable for the model."""
-    img = Image.open(image_file)
-    img = img.resize((224, 224))
+def load_image(image):
+    """Resize the image to be suitable for the model."""
+    img = image.resize((224, 224))
     img_array = np.array(img)
     img_array = np.expand_dims(img_array, axis=0)  
     return img_array
+
 
 def predict(image):
     """Run model prediction on the image and return scores."""
